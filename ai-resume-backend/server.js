@@ -8,6 +8,21 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+import { fileURLToPath } from 'url';
+
+import path from 'path';
+
+// Helpers to get __dirname in ES module
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Serve frontend static files
+app.use(express.static(path.join(__dirname, '../AI_Resume_optimizer/dist')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../AI_Resume_optimizer/dist/index.html'));
+});
+
 const API_KEY = process.env.OPENROUTER_API_KEY || "your_openrouter_api_key_here";
 
 app.post("/analyze", async (req, res) => {
