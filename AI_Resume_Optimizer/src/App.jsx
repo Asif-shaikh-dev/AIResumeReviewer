@@ -33,7 +33,7 @@ function App() {
     setAnalysis(null);
 
     try {
-      const res = await fetch("http://192.168.221.103:5000/analyze", {
+      const res = await fetch("http://localhost:5000/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ resumeText: resume, jobDescription: jobDesc }),
@@ -72,6 +72,7 @@ function App() {
 
         <textarea
           placeholder="Paste Resume"
+          value={resume}
           onChange={(e) => setResume(e.target.value)}
           rows={10}
           className={`w-full p-4 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500  dark:border-gray-600 ${darkMode ? "text-white" : "text-black"}`}
@@ -180,8 +181,8 @@ function App() {
                 }
               }}
               
-                className={`absolute top-2 text-xs cursor-pointer right-2 bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition"
-                title="Copy Improved Resume`}
+                className={`absolute top-2 text-xs cursor-pointer right-2 bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition`}
+                title="Copy Improved Resume"
               >
                 {isCopied ? 'Copied...' : (
                   <svg

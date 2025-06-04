@@ -9,19 +9,31 @@ app.use(cors());
 app.use(express.json());
 
 import { fileURLToPath } from 'url';
-
 import path from 'path';
 
-// Helpers to get __dirname in ES module
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Serve frontend static files
-app.use(express.static(path.join(__dirname, '../AI_Resume_optimizer/dist')));
+const staticPath = path.join(__dirname, '../AI_Resume_Optimizer/dist');
+
+app.use(express.static(staticPath));
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../AI_Resume_optimizer/dist/index.html'));
+  console.log(req.path, 'was requested');
+  if (req.path.startsWith('/api') || req.path.startsWith('/debug')) {
+    return res.status(404).send('API route not found');
+  }
+  res.sendFile(path.join(staticPath, 'index.html'), err => {
+    if (err) {
+      console.error('Error sending index.html:', err);
+      res.status(err.status || 500).end();
+    }
+  });
 });
+
+
+
+
 
 const API_KEY = process.env.OPENROUTER_API_KEY || "your_openrouter_api_key_here";
 
@@ -60,7 +72,14 @@ ${jobDescription}  also give improved resume text with the changes you made to i
       }
     );
 
-    const result = JSON.parse(response.data.choices[0].message.content); // Convert JSON string to object
+    let result;
+    try {
+      result = JSON.parse(response.data.choices[0].message.content);
+    } catch (e) {
+      console.error('JSON parse error:', e);
+      return res.status(500).json({ error: "Invalid JSON from AI response" });
+    }
+    
 
     res.json({
       score: result.score,
