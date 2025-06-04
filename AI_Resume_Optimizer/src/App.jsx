@@ -34,7 +34,7 @@ function App() {
     //  
     //http://localhost:5000
     try {
-      const res = await fetch(" https://airesumereviewer-6.onrender.com/analyze", {
+      const res = await fetch("https://airesumereviewer-final-backend.onrender.com/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ resumeText: resume, jobDescription: jobDesc }),
