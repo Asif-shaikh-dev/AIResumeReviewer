@@ -10,13 +10,15 @@ services:
       - key: PORT
         value: 10000
       - key: MONGO_URI
-        sync: false  # set manually in the dashboard if not committing
+        sync: false  # or true if you set it in Render dashboard
 
-  - type:  static_site
+  - type: web  # <- use web instead of static_site
     name: ai-resume-frontend
+    env: static  # <- this makes it act like a static site
+    plan: free
     rootDir: AI_Resume_Optimizer
     buildCommand: npm install && npm run build
-    staticPublishPath: dist  # or build if Create React App
+    staticPublishPath: dist  # change to 'build' if using CRA
     envVars:
       - key: VITE_API_URL
         value: https://ai-resume-backend.onrender.com
