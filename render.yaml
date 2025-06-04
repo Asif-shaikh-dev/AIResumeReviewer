@@ -12,7 +12,7 @@ services:
       - key: MONGO_URI
         sync: false  # set manually in the dashboard if not committing
 
-  - type: static
+  - type:  static_site
     name: ai-resume-frontend
     rootDir: AI_Resume_Optimizer
     buildCommand: npm install && npm run build
