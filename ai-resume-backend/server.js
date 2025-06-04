@@ -5,31 +5,11 @@ import axios from "axios";
 
 dotenv.config();
 const app = express();
-app.use(cors());
+app.use(cors({ origin: '*' }));
+
 app.use(express.json());
 
-import { fileURLToPath } from 'url';
-import path from 'path';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const staticPath = path.join(__dirname, '../AI_Resume_Optimizer/dist');
-
-app.use(express.static(staticPath));
-
-app.get('*', (req, res) => {
-  console.log(req.path, 'was requested');
-  if (req.path.startsWith('/api') || req.path.startsWith('/debug')) {
-    return res.status(404).send('API route not found');
-  }
-  res.sendFile(path.join(staticPath, 'index.html'), err => {
-    if (err) {
-      console.error('Error sending index.html:', err);
-      res.status(err.status || 500).end();
-    }
-  });
-});
 
 
 
