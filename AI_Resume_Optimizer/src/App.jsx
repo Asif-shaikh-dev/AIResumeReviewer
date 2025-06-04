@@ -31,7 +31,7 @@ function App() {
     }
     setLoading(true);
     setAnalysis(null);
-
+    // 
     try {
       const res = await fetch("https://airesumereviewer-4.onrender.com/analyze", {
         method: "POST",
@@ -122,98 +122,40 @@ function App() {
           )}
 
         </button>
-
         {analysis && (
-          <div className={`mt-6 space-y-4 `} >
-            <div className={`p-4 rounded shadow border-1 ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'}`}>
-              <h3 className="text-lg font-semibold text-blue-600 dark:text-blue-400">📊 ATS Score:</h3>
-              <p className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-black'}`}>
-                <span className={`${analysis.score >= 75 ? 'text-green-400' : 'text-red-400'}`}>{analysis.score}</span>/100
-              </p>
-            </div>
+  <div className={`mt-6 space-y-4`}>
+    {/* ATS Score */}
+    <div className={`p-4 rounded shadow border-1 ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'}`}>
+      <h3 className="text-lg font-semibold text-blue-600 dark:text-blue-400">📊 ATS Score:</h3>
+      <p className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-black'}`}>
+        <span className={`${analysis.score >= 75 ? 'text-green-400' : 'text-red-400'}`}>{analysis.score || 0}</span>/100
+      </p>
+    </div>
 
-            <div className={`p-4 rounded shadow border-1 ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'}`}>
-              <h3 className="text-lg font-semibold text-red-600 dark:text-red-400">🚫 Missing Skills:</h3>
-              <ul className="list-disc list-inside">
-                {analysis.missingSkills.map((skill, index) => (
-                  <li key={index}>{skill}</li>
-                ))}
-              </ul>
-            </div>
+    {/* Missing Skills */}
+    <div className={`p-4 rounded shadow border-1 ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'}`}>
+      <h3 className="text-lg font-semibold text-red-600 dark:text-red-400">🚫 Missing Skills:</h3>
+      <ul className="list-disc list-inside">
+        {(analysis.missingSkills || []).map((skill, index) => (
+          <li key={index}>{skill}</li>
+        ))}
+      </ul>
+    </div>
 
-            <div className={`p-4 rounded shadow border-1 ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'}`}>
-              <h3 className="text-lg font-semibold text-yellow-600 dark:text-yellow-400">💡 Feedback:</h3>
-              <p>{analysis.feedback}</p>
-            </div>
-            <div className={`relative p-4 rounded shadow border-1 ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'}`}>
-              <button
-              onClick={() => {
-                const text = analysis.improvedResume;
-              
-                // Try modern clipboard API
-                if (navigator.clipboard && window.isSecureContext) {
-                  navigator.clipboard.writeText(text).then(() => {
-                    setIsCopied(true);
-                    setTimeout(() => setIsCopied(false), 3000);
-                  });
-                } else {
-                  // Fallback for mobile
-                  const textArea = document.createElement("textarea");
-                  textArea.value = text;
-              
-                  // Avoid triggering scroll or keyboard
-                  textArea.style.position = "fixed";
-                  textArea.style.top = "-9999px";
-                  textArea.style.left = "-9999px";
-              
-                  document.body.appendChild(textArea);
-                  textArea.select();
-              
-                  try {
-                    document.execCommand("copy");
-                    setIsCopied(true);
-                    setTimeout(() => setIsCopied(false), 3000);
-                  } catch (err) {
-                    console.error("Fallback copy failed", err);
-                  }
-              
-                  document.body.removeChild(textArea);
-                }
-              }}
-              
-                className={`absolute top-2 text-xs cursor-pointer right-2 bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition`}
-                title="Copy Improved Resume"
-              >
-                {isCopied ? 'Copied...' : (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    className="w-9 h-4"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M8 16h8a2 2 0 002-2V6a2 2 0 00-2-2H8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M16 8h2a2 2 0 012 2v8a2 2 0 01-2 2h-8a2 2 0 01-2-2v-2"
-                    />
+    {/* Feedback */}
+    <div className={`p-4 rounded shadow border-1 ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'}`}>
+      <h3 className="text-lg font-semibold text-yellow-600 dark:text-yellow-400">💡 Feedback:</h3>
+      <p>{analysis.feedback}</p>
+    </div>
 
-                  </svg>)}
-              </button>
-
-              <h3 className="text-lg font-semibold text-green-600 dark:text-green-400">✅ Improved Resume:</h3>
-              <pre className="whitespace-pre-wrap">{analysis.improvedResume}</pre>
-            </div>
-
-          </div>
-        )}
+    {/* Improved Resume */}
+    <div className={`relative p-4 rounded shadow border-1 ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'}`}>
+      {/* ... your copy button code ... */}
+      <h3 className="text-lg font-semibold text-green-600 dark:text-green-400">✅ Improved Resume:</h3>
+      <pre className="whitespace-pre-wrap">{analysis.improvedResume}</pre>
+    </div>
+  </div>
+)}
 
 
         <ToastContainer position="top-right" autoClose={3000}
