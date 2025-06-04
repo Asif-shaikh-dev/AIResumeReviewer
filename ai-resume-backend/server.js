@@ -11,7 +11,7 @@ app.use(express.json());
 
 
 app.post("/about", (req, res) => {
-    res.json({
+   return res.json({
         name: "AI Resume Optimizer",})
 })
 
