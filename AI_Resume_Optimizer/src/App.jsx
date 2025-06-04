@@ -31,7 +31,7 @@ function App() {
     }
     setLoading(true);
     setAnalysis(null);
-    // 
+    //  http://localhost:5000
     try {
       const res = await fetch("https://airesumereviewer-4.onrender.com/analyze", {
         method: "POST",

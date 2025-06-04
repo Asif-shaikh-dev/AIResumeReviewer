@@ -12,8 +12,6 @@ app.use(express.json());
 
 
 
-console.log("Environment Variables:", process.env.OPENROUTER_API_KEY);
-
 
 const API_KEY = process.env.OPENROUTER_API_KEY || "your_openrouter_api_key_here";
 
@@ -55,12 +53,12 @@ ${jobDescription}  also give improved resume text with the changes you made to i
     let result;
     try {
       result = JSON.parse(response.data.choices[0].message.content);
-      // console.log("AI Response:", result);
     } catch (e) {
       console.error('JSON parse error:', e);
       return res.status(500).json({ error: "Invalid JSON from AI response" });
     }
     
+    console.log("AI Response:", result);
 
     res.json({
       score: result.score,
