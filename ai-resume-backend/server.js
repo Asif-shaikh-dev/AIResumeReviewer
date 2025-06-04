@@ -10,7 +10,10 @@ app.use(cors());
 app.use(express.json());
 
 
-
+app.post("/about", (req, res) => {
+    res.json({
+        name: "AI Resume Optimizer",})
+})
 
 
 const API_KEY = process.env.OPENROUTER_API_KEY || "your_openrouter_api_key_here";
